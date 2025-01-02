@@ -79,6 +79,3 @@ This repository contains a comprehensive analysis of Singapore’s public housin
 
 ---
 
-## Future Work
-- Extend analysis to include a deeper dive into geographic trends.
-- Explore possible algorithms that can be used for housing allocation
