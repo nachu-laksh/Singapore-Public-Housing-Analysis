@@ -1,0 +1,139 @@
+---
+title: "Untitled"
+author: "Nachu"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+install.packages("textdata",repos = "https://cran.r-project.org")
+install.packages("future",repos = "https://cran.r-project.org")
+install.packages("sentimentr",repos = "https://cran.r-project.org")
+install.packages("topicmodels", repos = "https://cran.r-project.org")
+install.packages("reshape2",repos = "https://cran.r-project.org")
+library(tidyverse)
+library(tidytext)
+library(syuzhet)
+library(sentimentr)
+library(textdata)
+library(topicmodels)
+library(reshape2)
+install.packages("textstem",repos = "https://cran.r-project.org")
+library(textstem)
+```
+
+```{r}
+
+
+# Read the text from your file
+
+text_data3 <- readLines("C:\\Users\\Nachu\\Desktop\\Affordability.txt")
+text_blob <- paste(text_data3, collapse = " ")
+
+```
+
+```{r}
+library(tm)
+
+# Convert the text into a Corpus
+corpus <- Corpus(VectorSource(text_blob))
+
+# Preprocess the text
+
+corpus$word <- lemmatize_words(corpus$word)
+corpus <- tm_map(corpus, content_transformer(tolower)) # Convert to lowercase
+corpus <- tm_map(corpus, removePunctuation)           # Remove punctuation
+corpus <- tm_map(corpus, removeNumbers)               # Remove numbers
+corpus <- tm_map(corpus, removeWords, stopwords("en"))# Remove stopwords
+corpus <- tm_map(corpus, stripWhitespace)             # Remove extra spaces
+```
+```{r}
+text_data3 <- readLines("C:\\Users\\Nachu\\Desktop\\Affordability.txt")
+text_blob <- paste(text_data3, collapse = " ")
+
+custom_stopwords <- c(
+  "i", "me", "you", "he", "she", "it", "we", "they", "them", "us", "his", "her", "its", 
+  "their", "ours", "yours", "the", "a", "an", "in", "on", "at", "by", "to", "from", "for", 
+  "about", "with", "as", "into", "through", "during", "before", "after", "above", "below", 
+  "between", "among", "over", "under", "around", "along", "of", "nor", "but", "or", "so", 
+  "yet", "although", "because", "since", "while", "if", "unless", "like", "just", "actually", 
+  "even", "so", "you know", "um", "ah", "well", "really", "right", "ok", "okay", "anyway", 
+  "basically", "seriously", "probably", "literally", "totally", "exactly", "definitely", "kind of", 
+  "sort of", "maybe", "to be honest", "you know what i mean", "i mean", "i guess", "well", "as well", 
+  "also", "too", "especially", "somewhat", "in fact", "literally", "basically", "normally", "usually", 
+  "generally", "mostly", "suddenly", "can", "cannot", "could", "would", "have", "has", "had", 
+  "having", "does", "do", "did", "doing", "be", "am", "is", "are", "was", "were", "been", "being", 
+  "that", "this", "these", "those", "there", "where", "when", "how", "why", "which", "whom", 
+  "whos", "who", "whose", "what", "what's", "isn't", "aren't", "wasn't", "weren't", "haven't", 
+  "hasn't", "didn't", "doesn't", "don't", "doesn't", "can't", "couldn't", "shouldn't", "wouldn't",
+  "should", "would", "might", "must", "mustn't", "don't", "won't", "isn't", "is","and","get","not","our","your","the","all","out","still","than","will","the","i'm","I'm","only","The","Then","then","Only","'s","any","more","flats","one","think"
+)
+custom_stopwords_capitalized <- toupper(substring(custom_stopwords, 1, 1))  # Make first letter uppercase
+custom_stopwords_capitalized <- paste0(custom_stopwords_capitalized, substring(custom_stopwords, 2))
+
+# Combine the original list and the capitalized words
+full_stopwords <- unique(c(custom_stopwords, custom_stopwords_capitalized))
+
+# Print the full stopwords list
+
+corpus <- Corpus(VectorSource(text_blob))
+
+# Remove custom stopwords
+corpus <- tm_map(corpus, removeWords, full_stopwords)
+corpus$word <- lemmatize_words(corpus$word)
+corpus <- tm_map(corpus, content_transformer(tolower)) # Convert to lowercase
+corpus <- tm_map(corpus, removePunctuation)           # Remove punctuation
+corpus <- tm_map(corpus, removeNumbers)               # Remove numbers
+corpus <- tm_map(corpus, removeWords, stopwords("en"))# Remove stopwords
+corpus <- tm_map(corpus, stripWhitespace)             # Remove extra spaces
+corpus_clean <- tm_map(corpus, content_transformer(function(x) gsub("\\bprices\\b", "price", x)))
+
+
+# Create a new Document-Term Matrix (DTM) after removing stopwords
+dtm <- DocumentTermMatrix(corpus_clean)
+
+# Inspect the DTM to see if filler words and prepositions are removed
+inspect(dtm)
+
+
+lda_model <- LDA(dtm, k = 2, control = list(seed = 123))
+
+# View topics
+topics <- terms(lda_model, 10)  # Get top 10 terms per topic
+print(topics)
+
+tidy_dtm <- tidy(dtm)
+
+# Tidy LDA output
+
+tidy_lda <- tidy(lda_model)
+
+# Plot top terms per topic
+top_terms <- tidy_lda %>%
+  group_by(topic) %>%
+  slice_max(beta, n = 10) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+# Create topic names based on top terms
+topic_names <- apply(top_terms, 2, function(x) paste(x, collapse = " "))
+
+# Print topic names
+print(topic_names)
+
+
+ggplot(top_terms, aes(beta, reorder_within(term, beta, topic), fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free_y") +
+  scale_y_reordered() +
+  labs(title = "Top Terms in Each Topic", x = "Importance (Beta)", y = "Term")
+```
+
+
+
+
+
+
+

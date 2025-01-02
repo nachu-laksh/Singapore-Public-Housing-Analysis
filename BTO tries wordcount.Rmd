@@ -1,0 +1,80 @@
+---
+title: "Untitled"
+author: "Nachu"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+install.packages("tidytext",repos = "https://cran.r-project.org")
+
+
+library(tm)
+library(wordcloud)
+library(RColorBrewer)
+library(tidytext)
+library(dplyr)
+library(readr)
+```
+```{r}
+text_data <- read_file("C:\\Users\\Nachu\\Desktop\\Trial.txt")
+clean_text <- tolower(text_data)  # Convert to lowercase
+clean_text <- removePunctuation(clean_text)  # Remove punctuation
+clean_text <- removeWords(clean_text, stopwords("en"))  # Remove stopwords
+clean_text <- stripWhitespace(clean_text)  # Remove extra whitespace
+```
+
+```{r}
+text_tokens <- tibble(text = clean_text) %>%
+  unnest_tokens(word, text)
+
+custom_stopwords <- c("get", "got", "is", "are", "it", "i", "you", 
+                      "he", "she", "we", "they", "this", "that", "of", "in", "on", "at", "for", 
+                      "with", "about", "as", "by", "an", "be", "have", "has", "had", "not", "but", 
+                      "if", "or", "so", "than", "when", "where", "which", "who", "whom", "whose", 
+                      "while", "because", "during", "before", "after", "now", "later", "such", "these", 
+                      "those", "each", "every", "all", "some", "any","like","just","op","u","badge", "commenter", "top","deleted","valuablepie","now","even","ok","now")
+
+clean_text <- removeWords(clean_text, c(stopwords("en"), custom_stopwords))  # Remove stopwords
+
+```
+
+
+```{r}
+word_freq <- text_tokens %>%
+  count(word, sort = TRUE)
+```
+
+
+```{r}
+install.packages("readxl",repos = "https://cran.r-project.org")
+library(readxl)
+```
+
+
+```{r}
+word_data <- read_excel("C:\\Users\\Nachu\\Desktop\\Repeated words.xlsx")
+
+# View the structure of the data
+head(word_data)
+```
+
+
+```{r}
+wordcloud(words = word_data$Word, 
+          freq = word_data$Frequency, 
+          min.freq = 7,  # Minimum frequency of words to include
+          scale = c(3, 0.5),  # Adjust size of words
+          max.words = 50,  # Maximum number of words to display
+          random.order = FALSE,  # Display most frequent words at the center
+          colors = brewer.pal(8, "Dark2"))
+```
+
