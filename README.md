@@ -8,31 +8,11 @@ This repository contains a comprehensive analysis of Singapore’s public housin
 
 ---
 
-## Repository Structure
-```
-├── README.md                           # Project overview
-├── White_paper_Singapore_housing.pdf   # The white paper
-├── Presentation_Singapore_housing.pptx # PowerPoint summary
-├── Rmd_Scripts/                        # Folder containing R scripts
-│   ├── Affordability_topic_analysis.Rmd
-│   └── BTO_tries_wordcount.Rmd
-├── Data/                               # Folder for raw and cleaned data
-│   ├── Raw/                            # Subfolder for raw data
-│   │   ├── Over_subscription_rate.xlsx
-│   │   ├── Working_file_1.xlsx
-│   ├── Cleaned/                        # Subfolder for cleaned data
-│       ├── Affordability.txt
-│       └── Tries.txt
-├── Figures/                            # Folder for generated visuals (e.g., Word Cloud, Bar Graph)
-```
-
----
-
 ## File Descriptions
 
 ### 1. White Paper and Presentation
-- **White_paper_Singapore_housing.pdf**: A detailed analysis of Singapore’s public housing system with findings and recommendations.
-- **Presentation_Singapore_housing.pptx**: A visual summary of the white paper.
+- **WhitePaper.pdf**: A detailed analysis of Singapore’s public housing system with findings and recommendations.
+- **Presentation.pdf**: A visual summary of the white paper.
 
 ### 2. Data Files
 #### Raw Data:
