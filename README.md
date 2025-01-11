@@ -16,22 +16,23 @@ This repository contains a comprehensive analysis of Singapore’s public housin
 
 ### 2. Data Files
 #### Raw Data:
-- **Over_subscription_rate.xlsx**:
-  - Contains raw data on oversubscription rates for Build-to-Order (BTO) flats.
-  - Includes a **bar graph** summarizing oversubscription trends.
-- **Working_file_1.xlsx**:
-  - Source data for text-based analysis and visualization in R.
+- **Over_Subscription_Data.xlsx**:
+  - Started off with raw data on oversubscription rates for Build-to-Order (BTO) flats.
+  - Cleaned data and created pivot table views.
+  - Created a **bar graph** summarizing oversubscription trends.
+- **Housing_Sentiment_Data.xlsx**:
+  - Scrapped Reddit for posts and comments.
+  - Cleaned phrases for two topics: balloting tries and affordability.
+  - Extracted counts for key phrases.
 
 #### Cleaned Data:
-- **Affordability.txt**:
-  - Cleaned data capturing affordability-related commentary.
-- **Tries.txt**:
-  - Cleaned data on public experiences with housing applications.
+- **Affordability.txt**: Phrases capturing affordability-related sentiment.
+- **Tries.txt**: Phrases on sentiment regarding housing applications.
 
 ### 3. R Markdown Scripts
-- **Affordability_topic_analysis.Rmd**:
+- **Affordability_Topic_Analysis.Rmd**:
   - Script for sentiment and word cloud analysis using `Affordability.txt`.
-- **BTO_tries_wordcount.Rmd**:
+- **BTO_Tries_Wordcount.Rmd**:
   - Word count analysis of `Tries.txt`, leading to visualizations in the white paper.
 
 ---
