@@ -58,5 +58,12 @@ This repository contains a comprehensive analysis of Singapore’s public housin
 - **Word Cloud**: Showcases public sentiment on housing affordability and oversubscription challenges.
 - **Bar Graph**: Visualizes oversubscription rates across various BTO estates and flat types.
 
+## Future work
+While this analysis focuses on affordability patterns based on available housing and income data, it does not model the behavioral or long-term impacts of potential policy changes. Expanding the project using dynamic simulations or agent-based modeling could help capture how different types of agents , such as public housing buyers, sellers, and policymakers respond over time.
+
+Concepts from microeconomics, including asymmetric information, signaling, and externalities, would be relevant to such an approach. These models could simulate how individual decisions aggregate to affect market outcomes, enabling a more robust assessment of scenarios such as expanded subsidies or eligibility reforms.
+
+Incorporating such methods would require additional data and modeling infrastructure, but this remains a promising direction for future work.
+
 ---
 
